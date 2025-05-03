@@ -13,6 +13,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ArrowLeft, CreditCard, Truck, ShieldCheck } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
+// Define a type for the checkout steps to ensure type safety
+type CheckoutStep = 'shipping' | 'payment' | 'review' | 'confirmation';
+
 // Mock cart data - in a real app, this would come from context/state management
 const cartItems = [
   {
@@ -31,7 +34,7 @@ const cartItems = [
 
 const Checkout = () => {
   const { toast } = useToast();
-  const [step, setStep] = useState<'shipping' | 'payment' | 'review' | 'confirmation'>('shipping');
+  const [step, setStep] = useState<CheckoutStep>('shipping');
   const [loading, setLoading] = useState(false);
   
   // Form states
@@ -610,3 +613,4 @@ const Checkout = () => {
 };
 
 export default Checkout;
+
