@@ -1,5 +1,6 @@
-
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -7,10 +8,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { User, Package, Heart, LogOut } from "lucide-react";
+import { User, Package, Heart, LogOut, Settings } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
 const Account = () => {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
   const { toast } = useToast();
   // Dummy state for demonstration - in a real app this would come from auth context/API
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -117,12 +120,14 @@ const Account = () => {
   };
 
   const handleLogout = () => {
+    logout();
     setIsLoggedIn(false);
     setActiveTab("profile");
     toast({
       title: "Logged out",
       description: "You've been successfully logged out.",
     });
+    navigate('/');
   };
 
   if (!isLoggedIn) {

@@ -1,99 +1,126 @@
-
-import { Facebook, Instagram, Mail } from 'lucide-react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { 
+  Facebook, 
+  Instagram, 
+  Twitter, 
+  Mail, 
+  Phone, 
+  MapPin,
+  Heart
+} from 'lucide-react';
 
-const Footer = () => {
+const Footer: React.FC = () => {
   return (
-    <footer className="bg-brand-green-dark text-white">
-      <div className="container-custom py-16">
-        {/* Newsletter Section */}
-        <div className="bg-white/10 backdrop-blur-sm rounded-lg p-8 mb-12">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <div>
-              <h3 className="text-2xl font-serif mb-2">Subscribe to our newsletter</h3>
-              <p className="text-white/80">Get exclusive offers, tips, and updates delivered to your inbox.</p>
-            </div>
-            <div>
-              <form className="flex flex-col sm:flex-row gap-3">
-                <input
-                  type="email"
-                  placeholder="Your email address"
-                  className="flex-1 px-4 py-3 rounded-md focus:outline-none text-foreground"
-                  required
-                />
-                <button
-                  type="submit"
-                  className="bg-brand-brown hover:bg-brand-brown-dark text-white font-medium px-6 py-3 rounded-md transition-colors"
-                >
-                  Subscribe
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-        
-        {/* Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          {/* Column 1 - About */}
+    <footer className="bg-gray-900 text-white">
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Company Info */}
           <div>
-            <h4 className="font-serif text-xl font-medium mb-4">Bloom</h4>
-            <p className="text-white/80 mb-6">
-              Crafting premium hair oils using ancient Ayurvedic practices combined with modern scientific techniques.
+            <div className="flex items-center space-x-2 mb-4">
+              <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center">
+                <span className="text-white font-bold text-sm">EH</span>
+              </div>
+              <span className="text-xl font-bold">Earthy Hair</span>
+            </div>
+            <p className="text-gray-400 mb-4">
+              Premium natural hair oils crafted with love and care for your beautiful hair.
             </p>
             <div className="flex space-x-4">
-              <a href="https://facebook.com" className="text-white/80 hover:text-white transition-colors" aria-label="Facebook">
-                <Facebook size={20} />
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <Facebook className="h-5 w-5" />
               </a>
-              <a href="https://instagram.com" className="text-white/80 hover:text-white transition-colors" aria-label="Instagram">
-                <Instagram size={20} />
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <Instagram className="h-5 w-5" />
               </a>
-              <a href="mailto:info@example.com" className="text-white/80 hover:text-white transition-colors" aria-label="Email">
-                <Mail size={20} />
+              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                <Twitter className="h-5 w-5" />
               </a>
             </div>
           </div>
-          
-          {/* Column 2 - Quick Links */}
+
+          {/* Quick Links */}
           <div>
-            <h4 className="font-serif text-lg font-medium mb-4">Quick Links</h4>
-            <ul className="space-y-3">
-              <li><Link to="/shop" className="text-white/80 hover:text-white transition-colors">Shop</Link></li>
-              <li><Link to="/about" className="text-white/80 hover:text-white transition-colors">About Us</Link></li>
-              <li><Link to="/blog" className="text-white/80 hover:text-white transition-colors">Blog</Link></li>
-              <li><Link to="/contact" className="text-white/80 hover:text-white transition-colors">Contact</Link></li>
+            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+            <ul className="space-y-2">
+              <li>
+                <Link to="/shop" className="text-gray-400 hover:text-white transition-colors">
+                  Shop All Products
+                </Link>
+              </li>
+              <li>
+                <Link to="/about" className="text-gray-400 hover:text-white transition-colors">
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="text-gray-400 hover:text-white transition-colors">
+                  Contact
+                </Link>
+              </li>
+              <li>
+                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                  FAQ
+                </a>
+              </li>
             </ul>
           </div>
-          
-          {/* Column 3 - Help */}
+
+          {/* Customer Service */}
           <div>
-            <h4 className="font-serif text-lg font-medium mb-4">Help</h4>
-            <ul className="space-y-3">
-              <li><Link to="/shipping" className="text-white/80 hover:text-white transition-colors">Shipping</Link></li>
-              <li><Link to="/returns" className="text-white/80 hover:text-white transition-colors">Returns & Exchanges</Link></li>
-              <li><Link to="/faq" className="text-white/80 hover:text-white transition-colors">FAQ</Link></li>
-              <li><Link to="/privacy" className="text-white/80 hover:text-white transition-colors">Privacy Policy</Link></li>
+            <h3 className="text-lg font-semibold mb-4">Customer Service</h3>
+            <ul className="space-y-2">
+              <li>
+                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                  Shipping Info
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                  Returns & Exchanges
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                  Privacy Policy
+                </a>
+              </li>
+              <li>
+                <a href="#" className="text-gray-400 hover:text-white transition-colors">
+                  Terms of Service
+                </a>
+              </li>
             </ul>
           </div>
-          
-          {/* Column 4 - Contact */}
+
+          {/* Contact Info */}
           <div>
-            <h4 className="font-serif text-lg font-medium mb-4">Contact Us</h4>
-            <address className="text-white/80 not-italic">
-              <p className="mb-3">1234 Botanical Lane</p>
-              <p className="mb-3">Herbal Heights, CA 90210</p>
-              <p className="mb-3">
-                <a href="tel:+1234567890" className="hover:text-white transition-colors">+1 (234) 567-890</a>
-              </p>
-              <p>
-                <a href="mailto:info@bloomhair.com" className="hover:text-white transition-colors">info@bloomhair.com</a>
-              </p>
-            </address>
+            <h3 className="text-lg font-semibold mb-4">Get in Touch</h3>
+            <ul className="space-y-3">
+              <li className="flex items-center text-gray-400">
+                <MapPin className="h-4 w-4 mr-2 flex-shrink-0" />
+                <span className="text-sm">123 Beauty Street, Wellness City, WC 12345</span>
+              </li>
+              <li className="flex items-center text-gray-400">
+                <Phone className="h-4 w-4 mr-2 flex-shrink-0" />
+                <span className="text-sm">+1 (555) 123-4567</span>
+              </li>
+              <li className="flex items-center text-gray-400">
+                <Mail className="h-4 w-4 mr-2 flex-shrink-0" />
+                <span className="text-sm">hello@earthyhair.com</span>
+              </li>
+            </ul>
           </div>
         </div>
-        
-        {/* Copyright */}
-        <div className="border-t border-white/20 mt-12 pt-8 text-center text-white/60">
-          <p>© {new Date().getFullYear()} Bloom. All rights reserved.</p>
+
+        {/* Bottom Bar */}
+        <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+          <p className="text-gray-400 text-sm">
+            © 2024 Earthy Hair Shoppe. All rights reserved.
+          </p>
+          <p className="text-gray-400 text-sm flex items-center mt-2 md:mt-0">
+            Made with <Heart className="h-4 w-4 mx-1 text-red-500" /> for beautiful hair
+          </p>
         </div>
       </div>
     </footer>
