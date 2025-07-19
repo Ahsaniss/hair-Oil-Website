@@ -7,12 +7,12 @@ import { Label } from '../components/ui/label';
 import { Link } from 'react-router-dom';
 
 const Profile: React.FC = () => {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
   const [formData, setFormData] = useState({
-    firstName: user?.firstName || '',
-    lastName: user?.lastName || '',
+    firstName: profile?.first_name || '',
+    lastName: profile?.last_name || '',
     email: user?.email || '',
-    phone: '',
+    phone: profile?.phone || '',
   });
 
   const handleSubmit = (e: React.FormEvent) => {

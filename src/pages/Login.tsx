@@ -17,7 +17,7 @@ import {
 import { toast } from 'sonner';
 
 const Login: React.FC = () => {
-  const { login } = useAuth();
+  const { login, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   
@@ -79,62 +79,18 @@ const Login: React.FC = () => {
     setIsLoading(true);
     
     try {
-      // Simulate authentication (replace with real API call in production)
-      const fakeToken = 'fake-token';
-      const fakeUser = {
-        id: 'user-id',
-        email: formData.email,
-        firstName: 'User',
-        lastName: '',
-        role: 'customer',
-      };
-      await login(fakeToken, fakeUser);
-      toast.success('Welcome back!');
+      const { error } = await login(formData.email, formData.password);
       
-      // Redirect to intended page or home
-      navigate(from, { replace: true });
+      if (error) {
+        toast.error(error.message || 'Login failed. Please check your credentials.');
+        setErrors({ general: error.message || 'Invalid email or password' });
+      } else {
+        toast.success('Welcome back!');
+        navigate(from, { replace: true });
+      }
     } catch (error: any) {
       console.error('Login error:', error);
-      toast.error(error.message || 'Login failed. Please check your credentials.');
-      
-      // Set form errors based on API response
-      if (error.message?.includes('email')) {
-        setErrors({ email: 'Invalid email address' });
-      } else if (error.message?.includes('password')) {
-        setErrors({ password: 'Invalid password' });
-      } else {
-        setErrors({ general: 'Invalid email or password' });
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // Demo login function for testing
-  const handleDemoLogin = async (role: 'admin' | 'customer') => {
-    setIsLoading(true);
-    
-    try {
-      // Demo credentials
-      const demoCredentials = {
-        admin: { email: 'admin@earthyhair.com', password: 'admin123' },
-        customer: { email: 'customer@example.com', password: 'customer123' }
-      };
-      
-      const { email, password } = demoCredentials[role];
-      // Simulate token and user for demo login
-      const demoUser = {
-        id: role === 'admin' ? '1' : '2',
-        email,
-        firstName: role === 'admin' ? 'Admin' : 'Customer',
-        lastName: role === 'admin' ? 'User' : 'User',
-        role,
-      };
-      await login('demo-token', demoUser);
-      toast.success(`Logged in as ${role}!`);
-      navigate(from, { replace: true });
-    } catch (error) {
-      toast.error('Demo login failed');
+      toast.error('An unexpected error occurred');
     } finally {
       setIsLoading(false);
     }
@@ -186,7 +142,7 @@ const Login: React.FC = () => {
                     onChange={handleInputChange}
                     placeholder="Enter your email"
                     className={`pl-10 ${errors.email ? 'border-red-500' : ''}`}
-                    disabled={isLoading}
+                    disabled={isLoading || loading}
                   />
                 </div>
                 {errors.email && (
@@ -207,13 +163,13 @@ const Login: React.FC = () => {
                     onChange={handleInputChange}
                     placeholder="Enter your password"
                     className={`pl-10 pr-10 ${errors.password ? 'border-red-500' : ''}`}
-                    disabled={isLoading}
+                    disabled={isLoading || loading}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                    disabled={isLoading}
+                    disabled={isLoading || loading}
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
@@ -248,9 +204,9 @@ const Login: React.FC = () => {
               <Button 
                 type="submit" 
                 className="w-full" 
-                disabled={isLoading}
+                disabled={isLoading || loading}
               >
-                {isLoading ? (
+                {isLoading || loading ? (
                   <>
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                     Signing in...
@@ -263,39 +219,6 @@ const Login: React.FC = () => {
                 )}
               </Button>
             </form>
-
-            {/* Demo Login Buttons */}
-            <div className="mt-6 space-y-3">
-              <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300" />
-                </div>
-                <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-gray-500">Demo Accounts</span>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => handleDemoLogin('admin')}
-                  disabled={isLoading}
-                  className="text-sm"
-                >
-                  Admin Demo
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => handleDemoLogin('customer')}
-                  disabled={isLoading}
-                  className="text-sm"
-                >
-                  Customer Demo
-                </Button>
-              </div>
-            </div>
 
             {/* Sign Up Link */}
             <div className="mt-6 text-center">

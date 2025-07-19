@@ -19,7 +19,7 @@ import {
 
 const AdminLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { user, logout, isAdmin } = useAuth();
+  const { user, profile, logout, isAdmin } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -79,11 +79,11 @@ const AdminLayout: React.FC = () => {
           <div className="p-4 border-b bg-gray-50">
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
-                {user?.firstName?.charAt(0)}{user?.lastName?.charAt(0)}
+                {profile?.first_name?.charAt(0) || 'A'}{profile?.last_name?.charAt(0) || 'D'}
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-900">
-                  {user?.firstName} {user?.lastName}
+                  {profile?.first_name || 'Admin'} {profile?.last_name || 'User'}
                 </p>
                 <p className="text-xs text-gray-500">Administrator</p>
               </div>
@@ -141,7 +141,7 @@ const AdminLayout: React.FC = () => {
               {menuItems.find(item => isActive(item.href))?.name || 'Dashboard'}
             </h2>
             <div className="flex items-center space-x-2">
-              <span className="text-sm text-gray-600">Welcome back, {user?.firstName}!</span>
+              <span className="text-sm text-gray-600">Welcome back, {profile?.first_name || 'Admin'}!</span>
             </div>
           </div>
         </header>
