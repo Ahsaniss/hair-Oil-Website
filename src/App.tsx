@@ -22,11 +22,11 @@ import Register from './pages/Register';
 
 // Admin Pages
 import AdminDashboard from './components/admin/AdminDashboard';
-
 import AdminOrders from './components/admin/AdminOrders';
 import AdminCustomers from './components/admin/AdminCustomers';
 import AdminAnalytics from './components/admin/AdminAnalytics';
 import AdminProducts from './components/admin/AdminProducts';
+import AdminProductForm from './pages/admin/AdminProductForm';
 
 // User Account Pages
 import Account from './pages/Account';
@@ -46,13 +46,13 @@ const queryClient = new QueryClient({
 
 // Protected Route Component for Admin
 const AdminProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user, isAuthenticated } = useAuth();
+  const { isAuthenticated, isAdmin } = useAuth();
   
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
   
-  if (user?.role !== 'admin') {
+  if (!isAdmin) {
     return <Navigate to="/" replace />;
   }
   
@@ -137,6 +137,8 @@ function App() {
                 >
                   <Route index element={<AdminDashboard />} />
                   <Route path="products" element={<AdminProducts />} />
+                  <Route path="products/new" element={<AdminProductForm />} />
+                  <Route path="products/edit/:id" element={<AdminProductForm />} />
                   <Route path="orders" element={<AdminOrders />} />
                   <Route path="customers" element={<AdminCustomers />} />
                   <Route path="analytics" element={<AdminAnalytics />} />
