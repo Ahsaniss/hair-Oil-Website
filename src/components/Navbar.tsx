@@ -43,6 +43,13 @@ const Navbar = () => {
         
         {/* Desktop Actions */}
         <div className="hidden md:flex items-center space-x-4">
+          {isAuthenticated && (
+            <Link to="/admin-setup">
+              <Button variant="ghost" size="sm" className="text-blue-600 hover:text-blue-700">
+                Admin Setup
+              </Button>
+            </Link>
+          )}
           {isAdmin && (
             <Link to="/admin">
               <Button variant="ghost" size="sm" className="text-brand-green border-brand-green hover:bg-brand-green hover:text-white">
@@ -87,6 +94,13 @@ const Navbar = () => {
               <li><Link to="/contact" className="block hover:text-brand-green transition-colors" onClick={() => setIsOpen(false)}>Contact</Link></li>
             </ul>
             <div className="flex flex-col space-y-2 pt-4 border-t">
+              {isAuthenticated && (
+                <Link to="/admin-setup" onClick={() => setIsOpen(false)}>
+                  <Button variant="ghost" size="sm" className="flex items-center justify-start w-full text-blue-600">
+                    Admin Setup
+                  </Button>
+                </Link>
+              )}
               {isAdmin && (
                 <Link to="/admin" onClick={() => setIsOpen(false)}>
                   <Button variant="ghost" size="sm" className="flex items-center justify-start w-full text-brand-green">
