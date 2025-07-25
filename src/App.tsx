@@ -19,6 +19,7 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import AdminSetup from './pages/AdminSetup';
 
 // Admin Pages
 import AdminDashboard from './components/admin/AdminDashboard';
@@ -90,6 +91,7 @@ function App() {
                   {/* Auth Routes (Public) */}
                   <Route path="login" element={<Login />} />
                   <Route path="register" element={<Register />} />
+                  <Route path="admin-setup" element={<AdminSetup />} />
                   
                   {/* Protected User Routes */}
                   <Route 

@@ -10,7 +10,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { itemCount } = useCart();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, isAdmin } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,6 +43,13 @@ const Navbar = () => {
         
         {/* Desktop Actions */}
         <div className="hidden md:flex items-center space-x-4">
+          {isAdmin && (
+            <Link to="/admin">
+              <Button variant="ghost" size="sm" className="text-brand-green border-brand-green hover:bg-brand-green hover:text-white">
+                Admin Panel
+              </Button>
+            </Link>
+          )}
           <Link to={isAuthenticated ? "/account" : "/login"}>
             <Button variant="ghost" size="icon">
               <User size={20} className="text-foreground hover:text-brand-green transition-colors" />
@@ -79,15 +86,22 @@ const Navbar = () => {
               <li><Link to="/about" className="block hover:text-brand-green transition-colors" onClick={() => setIsOpen(false)}>About</Link></li>
               <li><Link to="/contact" className="block hover:text-brand-green transition-colors" onClick={() => setIsOpen(false)}>Contact</Link></li>
             </ul>
-            <div className="flex space-x-4 pt-4 border-t">
+            <div className="flex flex-col space-y-2 pt-4 border-t">
+              {isAdmin && (
+                <Link to="/admin" onClick={() => setIsOpen(false)}>
+                  <Button variant="ghost" size="sm" className="flex items-center justify-start w-full text-brand-green">
+                    Admin Panel
+                  </Button>
+                </Link>
+              )}
               <Link to={isAuthenticated ? "/account" : "/login"} onClick={() => setIsOpen(false)}>
-                <Button variant="ghost" size="sm" className="flex items-center">
+                <Button variant="ghost" size="sm" className="flex items-center justify-start w-full">
                   <User size={18} className="mr-2" />
                   {isAuthenticated ? 'Account' : 'Login'}
                 </Button>
               </Link>
               <Link to="/cart" onClick={() => setIsOpen(false)} className="relative">
-                <Button variant="ghost" size="sm" className="flex items-center">
+                <Button variant="ghost" size="sm" className="flex items-center justify-start w-full">
                   <ShoppingCart size={18} className="mr-2" />
                   Cart {itemCount > 0 && `(${itemCount})`}
                 </Button>

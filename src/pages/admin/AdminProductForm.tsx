@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Switch } from '@/components/ui/switch';
-import { ArrowLeft, Upload, Save } from 'lucide-react';
+import { ArrowLeft, Upload, Save, Trash2, Edit } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -32,6 +32,8 @@ const AdminProductForm: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
+  const [currentImageUrl, setCurrentImageUrl] = useState<string>('');
+  const [productLoading, setProductLoading] = useState(false);
 
   const form = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
@@ -45,6 +47,47 @@ const AdminProductForm: React.FC = () => {
     },
   });
 
+  // Load existing product data when editing
+  useEffect(() => {
+    if (isEdit && id) {
+      loadProduct();
+    }
+  }, [isEdit, id]);
+
+  const loadProduct = async () => {
+    setProductLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) throw error;
+
+      if (data) {
+        form.reset({
+          name: data.name,
+          description: data.description || '',
+          price: data.price.toString(),
+          category: data.category || '',
+          stock_quantity: data.stock_quantity?.toString() || '0',
+          is_featured: data.is_featured || false,
+        });
+        
+        if (data.image_url) {
+          setCurrentImageUrl(data.image_url);
+        }
+      }
+    } catch (error) {
+      console.error('Error loading product:', error);
+      toast.error('Failed to load product data');
+      navigate('/admin/products');
+    } finally {
+      setProductLoading(false);
+    }
+  };
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -52,7 +95,14 @@ const AdminProductForm: React.FC = () => {
       const reader = new FileReader();
       reader.onload = () => setImagePreview(reader.result as string);
       reader.readAsDataURL(file);
+      setCurrentImageUrl(''); // Clear current image when new one is selected
     }
+  };
+
+  const removeCurrentImage = () => {
+    setCurrentImageUrl('');
+    setImageFile(null);
+    setImagePreview('');
   };
 
   const uploadImage = async (file: File): Promise<string> => {
@@ -125,6 +175,17 @@ const AdminProductForm: React.FC = () => {
     'Organic',
     'Essential Oils',
   ];
+
+  if (productLoading) {
+    return (
+      <div className="flex items-center justify-center py-8">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-green mx-auto mb-4"></div>
+          <p>Loading product...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -246,26 +307,64 @@ const AdminProductForm: React.FC = () => {
                         alt="Preview"
                         className="mx-auto h-48 w-48 object-cover rounded-lg"
                       />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => {
-                          setImageFile(null);
-                          setImagePreview('');
-                        }}
-                        className="mt-2"
-                      >
-                        Remove Image
-                      </Button>
+                      <div className="flex gap-2 mt-4 justify-center">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => {
+                            setImageFile(null);
+                            setImagePreview('');
+                          }}
+                        >
+                          <Trash2 className="h-4 w-4 mr-2" />
+                          Remove New Image
+                        </Button>
+                      </div>
+                    </div>
+                  ) : currentImageUrl ? (
+                    <div className="text-center">
+                      <img
+                        src={currentImageUrl}
+                        alt="Current product image"
+                        className="mx-auto h-48 w-48 object-cover rounded-lg"
+                      />
+                      <div className="flex gap-2 mt-4 justify-center">
+                        <label htmlFor="image-upload">
+                          <Button type="button" variant="outline" asChild>
+                            <span className="cursor-pointer">
+                              <Edit className="h-4 w-4 mr-2" />
+                              Change Image
+                            </span>
+                          </Button>
+                        </label>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={removeCurrentImage}
+                        >
+                          <Trash2 className="h-4 w-4 mr-2" />
+                          Remove Image
+                        </Button>
+                      </div>
+                      <input
+                        id="image-upload"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="hidden"
+                      />
                     </div>
                   ) : (
                     <div className="text-center">
                       <Upload className="mx-auto h-12 w-12 text-gray-400" />
                       <div className="mt-4">
                         <label htmlFor="image-upload" className="cursor-pointer">
-                          <span className="mt-2 block text-sm font-medium text-gray-900">
-                            Upload product image
-                          </span>
+                          <Button type="button" variant="outline" asChild>
+                            <span>
+                              <Upload className="h-4 w-4 mr-2" />
+                              Upload Product Image
+                            </span>
+                          </Button>
                         </label>
                         <input
                           id="image-upload"
