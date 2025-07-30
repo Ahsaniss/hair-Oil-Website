@@ -10,7 +10,7 @@ import Layout from './components/Layout';
 import AdminLayout from './components/admin/AdminLayout';
 
 // Public Pages
-import Home from './pages/Home';
+import Index from './pages/Index';
 import Shop from './pages/Shop';
 import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
@@ -81,7 +81,7 @@ function App() {
             <div className="min-h-screen flex flex-col">
               <Routes>
                 <Route path="/" element={<Layout />}>
-                  <Route index element={<Home />} />
+                  <Route index element={<Index />} />
                   <Route path="shop" element={<Shop />} />
                   <Route path="product/:id" element={<ProductDetail />} />
                   <Route path="cart" element={<Cart />} />
