@@ -130,9 +130,11 @@ const AdminProducts: React.FC = () => {
           <h1 className="text-3xl font-bold text-gray-900">Products</h1>
           <p className="text-gray-600">Manage your product inventory</p>
         </div>
-        <Button>
-          <Plus className="h-4 w-4 mr-2" />
-          Add Product
+        <Button asChild>
+          <Link to="/admin/products/new">
+            <Plus className="h-4 w-4 mr-2" />
+            Add Product
+          </Link>
         </Button>
       </div>
 
@@ -326,9 +328,11 @@ const AdminProducts: React.FC = () => {
                                 <Eye className="h-4 w-4 mr-2" />
                                 View
                               </DropdownMenuItem>
-                              <DropdownMenuItem>
-                                <Edit className="h-4 w-4 mr-2" />
-                                Edit
+                              <DropdownMenuItem asChild>
+                                <Link to={`/admin/products/edit/${product._id}`}>
+                                  <Edit className="h-4 w-4 mr-2" />
+                                  Edit
+                                </Link>
                               </DropdownMenuItem>
                               <DropdownMenuItem
                                 className="text-red-600"
@@ -382,9 +386,11 @@ const AdminProducts: React.FC = () => {
                         </div>
                       </div>
                       <div className="flex gap-2 mt-4">
-                        <Button variant="outline" size="sm" className="flex-1">
-                          <Edit className="h-4 w-4 mr-1" />
-                          Edit
+                        <Button variant="outline" size="sm" className="flex-1" asChild>
+                          <Link to={`/admin/products/edit/${product._id}`}>
+                            <Edit className="h-4 w-4 mr-1" />
+                            Edit
+                          </Link>
                         </Button>
                         <Button
                           variant="outline"
@@ -409,9 +415,11 @@ const AdminProducts: React.FC = () => {
               <p className="text-gray-500 mb-4">
                 {searchTerm ? 'Try adjusting your search criteria' : 'Get started by adding your first product'}
               </p>
-              <Button>
-                <Plus className="h-4 w-4 mr-2" />
-                Add Product
+              <Button asChild>
+                <Link to="/admin/products/new">
+                  <Plus className="h-4 w-4 mr-2" />
+                  Add Product
+                </Link>
               </Button>
             </div>
           )}
