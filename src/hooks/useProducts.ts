@@ -66,7 +66,7 @@ export const useProductsByCategory = (categoryId: string | null) => {
     data: [],
     isLoading: false,
     error: null,
-    refetch: () => {}
+    refetch: () => Promise.resolve(),
   };
 };
 

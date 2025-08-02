@@ -33,10 +33,10 @@ const ShopPage = () => {
     return products.filter(product => {
       const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            product.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           product.tags?.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
+                           (product as any).tags?.some((tag: string) => tag.toLowerCase().includes(searchTerm.toLowerCase()));
       
       const matchesCategory = selectedCategories.length === 0 || 
-                             (product.category_id && selectedCategories.includes(product.category_id));
+                             ((product as any).category_id && selectedCategories.includes((product as any).category_id));
       
       const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
 
@@ -48,7 +48,7 @@ const ShopPage = () => {
         case 'price-high':
           return b.price - a.price;
         case 'rating':
-          return (b.rating || 0) - (a.rating || 0);
+          return ((b as any).rating || 0) - ((a as any).rating || 0);
         case 'newest':
           return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
         default:
@@ -233,14 +233,14 @@ const ShopPage = () => {
                           {product.description}
                         </p>
 
-                        {product.rating && (
+                        {(product as any).rating && (
                           <div className="flex items-center gap-1 mb-3">
                             <div className="flex">
                               {Array.from({ length: 5 }).map((_, i) => (
                                 <Star
                                   key={i}
                                   className={`h-4 w-4 ${
-                                    i < Math.floor(product.rating || 0)
+                                    i < Math.floor((product as any).rating || 0)
                                       ? 'text-yellow-400 fill-current'
                                       : 'text-gray-300'
                                   }`}
@@ -248,7 +248,7 @@ const ShopPage = () => {
                               ))}
                             </div>
                             <span className="text-sm text-muted-foreground">
-                              ({product.review_count || 0})
+                              ({(product as any).review_count || 0})
                             </span>
                           </div>
                         )}
@@ -262,9 +262,9 @@ const ShopPage = () => {
                           </span>
                         </div>
 
-                        {product.tags && product.tags.length > 0 && (
+                        {(product as any).tags && (product as any).tags.length > 0 && (
                           <div className="flex flex-wrap gap-1 mt-3">
-                            {product.tags.slice(0, 3).map((tag, index) => (
+                            {(product as any).tags.slice(0, 3).map((tag: string, index: number) => (
                               <Badge key={index} variant="outline" className="text-xs">
                                 {tag}
                               </Badge>
